@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(tree:*)",
+      "Bash(find:*)",
+      "Bash(chmod:*)",
+      "Bash(/Users/alisimacpro/Desktop/RayLink/fix_project.sh)",
+      "Bash(./build_xray.sh:*)",
+      "Bash(echo:*)",
+      "Bash(sed:*)",
+      "Bash(./final_fix.sh)",
+      "Bash(swift create_icon.swift:*)",
+      "Bash(python3:*)",
+      "Bash(grep:*)",
+      "Bash(./fix_all_issues.sh)",
+      "Bash(./verify_structure.sh:*)",
+      "Bash(cat:*)",
+      "Bash(__NEW_LINE__ echo \"\")",
+      "Bash(__NEW_LINE__ echo \"✅ TYPE ERRORS FIXES APPLIED!\")",
+      "Bash(./fix_imports.sh)",
+      "Bash(__NEW_LINE__ echo \"✅ TYPE SYSTEM FIXED!\")",
+      "Bash(./verify_build.sh:*)",
+      "Bash(./fix_all_types.sh:*)",
+      "Bash(./fix_imports_final.sh)",
+      "Bash(./fix_all_remaining.sh)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

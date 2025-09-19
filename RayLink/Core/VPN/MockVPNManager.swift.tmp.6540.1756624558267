@@ -1,0 +1,189 @@
+import Foundation
+import Combine
+
+// MARK: - Mock VPN Manager for Development
+// This manager simulates VPN functionality for testing without a paid developer account
+final class MockVPNManager: VPNManagerProtocol, ObservableObject {
+    @Published private var currentStatus: VPNConnectionStatus = .disconnected
+    @Published var currentServer: VPNServer?
+    @Published var connectionStartTime: Date?
+    @Published var bytesReceived: Int64 = 0
+    @Published var bytesSent: Int64 = 0
+    @Published var ping: Int = 0
+    
+    private let statusSubject = CurrentValueSubject<VPNConnectionStatus, Never>(.disconnected)
+    private var connectionTimer: Timer?
+    private var statsTimer: Timer?
+    private var mockConnectionTask: Task<Void, Never>?
+    
+    var connectionStatus: AnyPublisher<VPNConnectionStatus, Never> {
+        statusSubject.eraseToAnyPublisher()
+    }
+    
+    var isConnected: Bool {
+        currentStatus.isConnected
+    }
+    
+    init() {
+        print("🎭 Mock VPN Manager initialized - Development Mode")
+        print("ℹ️ Using simulated VPN connection for UI testing")
+        print("⚠️ Actual VPN connection requires a paid Apple Developer account")
+    }
+    
+    // MARK: - Public Methods
+    func loadConfigurations() async throws {
+        // Simulate loading configurations
+        try await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
+        print("✅ Mock configurations loaded")
+    }
+    
+    func connect(to server: VPNServer) async throws {
+        guard currentStatus != .connected && currentStatus != .connecting else {
+            throw VPNError.alreadyConnected
+        }
+        
+        // Cancel any existing connection task
+        mockConnectionTask?.cancel()
+        
+        // Start new connection task
+        mockConnectionTask = Task {
+            // Update status to connecting
+            await MainActor.run {
+                currentStatus = .connecting
+                statusSubject.send(.connecting)
+                currentServer = server
+                print("🔄 Mock connecting to: \(server.name)")
+            }
+            
+            // Simulate connection delay (2-3 seconds)
+            let delay = Double.random(in: 2.0...3.0)
+            try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
+            
+            guard !Task.isCancelled else { return }
+            
+            // Update status to connected
+            await MainActor.run {
+                currentStatus = .connected
+                statusSubject.send(.connected)
+                connectionStartTime = Date()
+                ping = Int.random(in: 20...150)
+                print("✅ Mock connected to: \(server.name)")
+                
+                // Start mock statistics
+                startMockStatistics()
+            }
+        }
+    }
+    
+    func disconnect() async throws {
+        guard currentStatus == .connected || currentStatus == .connecting else {
+            throw VPNError.notConnected
+        }
+        
+        // Cancel connection task if connecting
+        mockConnectionTask?.cancel()
+        
+        // Update status to disconnecting
+        currentStatus = .disconnecting
+        statusSubject.send(.disconnecting)
+        print("🔄 Mock disconnecting...")
+        
+        // Stop statistics
+        stopMockStatistics()
+        
+        // Simulate disconnection delay
+        try await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
+        
+        // Update status to disconnected
+        currentStatus = .disconnected
+        statusSubject.send(.disconnected)
+        currentServer = nil
+        connectionStartTime = nil
+        bytesReceived = 0
+        bytesSent = 0
+        ping = 0
+        print("✅ Mock disconnected")
+    }
+    
+    func removeAllConfigurations() async throws {
+        // Simulate removing configurations
+        try await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
+        currentServer = nil
+        print("✅ Mock configurations removed")
+    }
+    
+    // MARK: - Mock Statistics
+    private func startMockStatistics() {
+        // Update stats every second
+        statsTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            
+            // Simulate data transfer
+            let downloadSpeed = Int64.random(in: 100_000...10_000_000) // 100KB to 10MB
+            let uploadSpeed = Int64.random(in: 50_000...2_000_000) // 50KB to 2MB
+            
+            self.bytesReceived += downloadSpeed
+            self.bytesSent += uploadSpeed
+            
+            // Occasionally update ping
+            if Int.random(in: 0...10) > 7 {
+                self.ping = Int.random(in: 20...150)
+            }
+        }
+    }
+    
+    private func stopMockStatistics() {
+        statsTimer?.invalidate()
+        statsTimer = nil
+    }
+    
+    // MARK: - Testing Helpers
+    func testConnection(server: VPNServer) async -> (success: Bool, ping: Int) {
+        // Simulate connection test
+        try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
+        
+        let success = Bool.random() || true // Mostly successful for testing
+        let ping = success ? Int.random(in: 20...300) : 999
+        
+        print("🧪 Mock connection test for \(server.name): \(success ? "✅" : "❌") (\(ping)ms)")
+        
+        return (success, ping)
+    }
+    
+    func getStatistics() -> (upload: String, download: String, ping: Int) {
+        let uploadMB = Double(bytesSent) / 1_048_576
+        let downloadMB = Double(bytesReceived) / 1_048_576
+        
+        return (
+            upload: String(format: "%.2f MB", uploadMB),
+            download: String(format: "%.2f MB", downloadMB),
+            ping: ping
+        )
+    }
+}
+
+// MARK: - VPN Manager Factory
+class VPNManagerFactory {
+    static func createManager() -> VPNManagerProtocol {
+        // Check if we should use mock manager
+        #if DEBUG
+        // In debug mode, check for developer account
+        if !hasPaidDeveloperAccount() {
+            print("⚠️ No paid developer account detected - using Mock VPN Manager")
+            return MockVPNManager()
+        }
+        #endif
+        
+        // Use real VPN manager if available
+        return VPNManager()
+    }
+    
+    private static func hasPaidDeveloperAccount() -> Bool {
+        // Check for NetworkExtension entitlement
+        // This will be false without a paid account
+        if let entitlements = Bundle.main.infoDictionary?["com.apple.developer.networking.networkextension"] as? [String] {
+            return !entitlements.isEmpty
+        }
+        return false
+    }
+}
