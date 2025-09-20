@@ -259,7 +259,7 @@ struct LoadingView: View {
                 .background(.ultraThinMaterial)
             
             // Animated liquid wave
-            Wave(offset: Angle(degrees: waveOffset), percent: 0.6)
+            LiquidWaveShape(offset: Angle(degrees: waveOffset), percent: 0.6)
                 .fill(AppTheme.AuroraGradients.primary)
                 .clipShape(RoundedRectangle(cornerRadius: 23))
                 .frame(width: 76, height: 46)
@@ -311,7 +311,7 @@ struct LoadingView: View {
 }
 
 // MARK: - Wave Shape for Liquid Animation
-struct Wave: Shape {
+struct LiquidWaveShape: Shape {
     var offset: Angle
     var percent: Double
     

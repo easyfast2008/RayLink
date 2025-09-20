@@ -4,28 +4,105 @@ import Combine
 // Global types imported via RayLinkTypes
 
 // MARK: - Navigation Destination
-enum NavigationDestination: Hashable {
+enum NavigationDestination: Hashable, Identifiable {
     case home
     case serverList
+    case serverDetail(VPNServer)
     case addServer
+    case editServer(VPNServer)
     case settings
+    case settingsSection(SettingsSection)
     case importConfig
+    case importConfigResult([VPNServer])
+    case speedTest
+    case speedTestResult(SpeedTestResult)
+    case logs
+    case about
+    case help
+    case subscription
+    case addSubscription
+    case trustedNetworks
+    case routingRules
+    case dataUsage
+    case privacy
+    case diagnostics
+    case backup
+
+    enum SettingsSection: Hashable {
+        case connection
+        case privacy
+        case advanced
+        case appearance
+        case notifications
+        case subscription
+        case about
+    }
+
+    var id: String {
+        switch self {
+        case .home:
+            return "home"
+        case .serverList:
+            return "serverList"
+        case .serverDetail(let server):
+            return "serverDetail-\(server.id)"
+        case .addServer:
+            return "addServer"
+        case .editServer(let server):
+            return "editServer-\(server.id)"
+        case .settings:
+            return "settings"
+        case .settingsSection(let section):
+            return "settingsSection-\(section)"
+        case .importConfig:
+            return "importConfig"
+        case .importConfigResult(let servers):
+            let hash = servers.map { $0.id }.joined(separator: "-")
+            return "importConfigResult-\(hash)"
+        case .speedTest:
+            return "speedTest"
+        case .speedTestResult(let result):
+            return "speedTestResult-\(result.timestamp.timeIntervalSince1970)"
+        case .logs:
+            return "logs"
+        case .about:
+            return "about"
+        case .help:
+            return "help"
+        case .subscription:
+            return "subscription"
+        case .addSubscription:
+            return "addSubscription"
+        case .trustedNetworks:
+            return "trustedNetworks"
+        case .routingRules:
+            return "routingRules"
+        case .dataUsage:
+            return "dataUsage"
+        case .privacy:
+            return "privacy"
+        case .diagnostics:
+            return "diagnostics"
+        case .backup:
+            return "backup"
+        }
+    }
 }
 
 // MARK: - Navigation Coordinator
-public final class NavigationCoordinator: ObservableObject {
-    @Published public var path = NavigationPath()
-    @Published public var selectedTab: Int = 0
-    @Published public var presentedSheet: NavigationDestination?
-    @Published public var presentedFullScreen: NavigationDestination?
-    @Published public var alert: AlertItem?
-    
-    public init() {
-        // Public initializer
+final class NavigationCoordinator: ObservableObject {
+    @Published var path = NavigationPath()
+    @Published var selectedTab: Int = 0
+    @Published var presentedSheet: NavigationDestination?
+    @Published var presentedFullScreen: NavigationDestination?
+    @Published var alert: AlertItem?
+
+    init() {
+        // Default initializer
     }
-    
+
     // Tab-based navigation state
-    public enum Tab: Int, CaseIterable {
+    enum Tab: Int, CaseIterable {
         case home = 0
         case servers = 1
         case settings = 2
@@ -73,18 +150,13 @@ public final class NavigationCoordinator: ObservableObject {
     func navigate(to destination: NavigationDestination) {
         switch destination {
         case .home:
-            selectedTab = Tab.home.rawValue
-            path = NavigationPath()
+            selectTab(.home)
         case .serverList:
-            selectedTab = Tab.servers.rawValue
-            path = NavigationPath()
+            selectTab(.servers)
         case .settings:
-            selectedTab = Tab.settings.rawValue
-            path = NavigationPath()
-        case .addServer, .importConfig, .speedTest:
-            presentSheet(destination)
+            selectTab(.settings)
         default:
-            path.append(destination)
+            push(destination)
         }
     }
     
@@ -120,7 +192,7 @@ public final class NavigationCoordinator: ObservableObject {
     func showAlert(_ alert: AlertItem) {
         self.alert = alert
     }
-    
+
     func selectTab(_ tab: Tab) {
         selectedTab = tab.rawValue
         path = NavigationPath() // Clear navigation stack when switching tabs
@@ -142,7 +214,7 @@ public final class NavigationCoordinator: ObservableObject {
                 self.dismissSheet()
             }
         case .editServer(let server):
-            EditServerView(server: server) { updatedServer in
+            EditServerView(server: server) { _ in
                 // Handle server update
                 self.dismissSheet()
             }
@@ -167,7 +239,7 @@ public final class NavigationCoordinator: ObservableObject {
         case .subscription:
             SubscriptionView()
         case .addSubscription:
-            AddSubscriptionView()
+            AddSubscriptionView { _ in }
         case .trustedNetworks:
             TrustedNetworksView()
         case .routingRules:
@@ -182,7 +254,7 @@ public final class NavigationCoordinator: ObservableObject {
             BackupView()
         }
     }
-    
+
     @ViewBuilder
     private func settingsView(for section: NavigationDestination.SettingsSection) -> some View {
         switch section {
@@ -248,12 +320,12 @@ public final class NavigationCoordinator: ObservableObject {
 }
 
 // MARK: - Alert Item
-public struct AlertItem: Identifiable {
-    public let id = UUID()
-    public let title: String
-    public let message: String?
-    public let primaryButton: AlertButton?
-    public let secondaryButton: AlertButton?
+struct AlertItem: Identifiable {
+    let id = UUID()
+    let title: String
+    let message: String?
+    let primaryButton: AlertButton?
+    let secondaryButton: AlertButton?
     
     init(
         title: String,
@@ -268,7 +340,7 @@ public struct AlertItem: Identifiable {
     }
 }
 
-public struct AlertButton {
+struct AlertButton {
     let title: String
     let action: () -> Void
     let style: AlertButtonStyle
