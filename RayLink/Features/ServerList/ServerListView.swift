@@ -45,7 +45,7 @@ struct ServerListView: View {
                             } else if filteredGroups.isEmpty {
                                 EmptyServerState(
                                     onAddServer: { showingAddServer = true },
-                                    onImport: { coordinator.navigate(to: .import) }
+                                    onImport: { coordinator.navigate(to: .importConfig) }
                                 )
                                 .transition(.asymmetric(
                                     insertion: .scale.combined(with: .opacity),
@@ -113,8 +113,8 @@ struct ServerListView: View {
                             Button("Add Server") { 
                                 showingAddServer = true 
                             }
-                            Button("Import from URL") { 
-                                coordinator.navigate(to: .import) 
+                            Button("Import from URL") {
+                                coordinator.navigate(to: .importConfig)
                             }
                             Divider()
                             Button("Refresh All") { 
