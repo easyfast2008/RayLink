@@ -40,8 +40,8 @@ public final class HomeViewModel: ObservableObject {
         return Date().timeIntervalSince(startTime)
     }
     
-    var connectionStatistics: ConnectionStatistics {
-        ConnectionStatistics(
+    var connectionStatistics: ConnectionMetrics {
+        ConnectionMetrics(
             uploadSpeed: uploadSpeed,
             downloadSpeed: downloadSpeed,
             totalUploaded: bytesSent,

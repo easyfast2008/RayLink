@@ -253,7 +253,7 @@ struct PortForwardingRule: Codable, Identifiable, Equatable {
     var localPort: Int
     var remotePort: Int
     var remoteHost: String
-    var protocol: ForwardingProtocol
+    var forwardingProtocol: ForwardingProtocol
     var isEnabled: Bool
     var createdAt: Date
     var updatedAt: Date
@@ -264,7 +264,7 @@ struct PortForwardingRule: Codable, Identifiable, Equatable {
         localPort: Int,
         remotePort: Int,
         remoteHost: String,
-        protocol: ForwardingProtocol = .tcp,
+        forwardingProtocol: ForwardingProtocol = .tcp,
         isEnabled: Bool = true
     ) {
         self.id = id
@@ -272,7 +272,7 @@ struct PortForwardingRule: Codable, Identifiable, Equatable {
         self.localPort = localPort
         self.remotePort = remotePort
         self.remoteHost = remoteHost
-        self.protocol = `protocol`
+        self.forwardingProtocol = forwardingProtocol
         self.isEnabled = isEnabled
         self.createdAt = Date()
         self.updatedAt = Date()
@@ -368,7 +368,7 @@ struct TrustedNetwork: Codable, Identifiable, Equatable {
 }
 
 // MARK: - Connection Statistics
-struct ConnectionStatistics: Codable, Equatable {
+struct UsageStatistics: Codable, Equatable {
     var totalConnections: Int = 0
     var successfulConnections: Int = 0
     var failedConnections: Int = 0
@@ -377,7 +377,7 @@ struct ConnectionStatistics: Codable, Equatable {
     var totalConnectionTime: TimeInterval = 0
     var averageConnectionTime: TimeInterval = 0
     var lastConnection: Date?
-    var dailyStats: [String: DailyStats] = [:] // Date string as key
+    var dailyStats: [String: UsageDailyStats] = [:] // Date string as key
     
     mutating func recordConnection(success: Bool, duration: TimeInterval, upload: Int64, download: Int64) {
         totalConnections += 1
@@ -396,7 +396,7 @@ struct ConnectionStatistics: Codable, Equatable {
         
         // Update daily stats
         let today = DateFormatter.dayKey.string(from: Date())
-        var todayStats = dailyStats[today] ?? DailyStats()
+        var todayStats = dailyStats[today] ?? UsageDailyStats()
         todayStats.connections += 1
         todayStats.upload += upload
         todayStats.download += download
@@ -417,7 +417,7 @@ struct ConnectionStatistics: Codable, Equatable {
     }
 }
 
-struct DailyStats: Codable, Equatable {
+struct UsageDailyStats: Codable, Equatable {
     var connections: Int = 0
     var upload: Int64 = 0
     var download: Int64 = 0

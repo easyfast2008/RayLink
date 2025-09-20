@@ -43,7 +43,7 @@ struct XrayConfigBuilder {
     // MARK: - Outbound Configuration
     
     private static func createOutbound(for server: VPNServer) throws -> XrayOutbound {
-        switch server.protocol {
+        switch server.serverProtocol {
         case .vmess:
             return try createVMessOutbound(for: server)
         case .vless:

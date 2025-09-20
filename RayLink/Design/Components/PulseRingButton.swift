@@ -147,7 +147,7 @@ struct PulseRingButton: View {
             ZStack {
                 // Background with glassmorphic effect
                 Circle()
-                    .fill(buttonBackgroundGradient)
+                    .fill(buttonBackgroundStyle)
                     .frame(width: size.buttonSize, height: size.buttonSize)
                 
                 // Inner glow
@@ -196,14 +196,14 @@ struct PulseRingButton: View {
         }
     }
     
-    private var buttonBackgroundGradient: some View {
+    private var buttonBackgroundStyle: AnyShapeStyle {
         switch connectionState {
         case .connected:
-            return AnyView(AppTheme.AuroraGradients.connected)
+            return AnyShapeStyle(AppTheme.AuroraGradients.connected)
         case .connecting:
-            return AnyView(AppTheme.AuroraGradients.connecting)
+            return AnyShapeStyle(AppTheme.AuroraGradients.connecting)
         case .disconnected:
-            return AnyView(AppTheme.AuroraGradients.disconnected)
+            return AnyShapeStyle(AppTheme.AuroraGradients.disconnected)
         }
     }
     

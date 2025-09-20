@@ -6,7 +6,7 @@ struct VPNServer: Codable, Identifiable, Equatable {
     var name: String
     let address: String
     let port: Int
-    let protocol: VPNProtocol
+    let serverProtocol: VPNProtocol
     
     // Authentication
     var username: String?
@@ -46,13 +46,17 @@ struct VPNServer: Codable, Identifiable, Equatable {
     var tags: [String] = []
     var createdAt: Date = Date()
     var updatedAt: Date = Date()
+
+    static func == (lhs: VPNServer, rhs: VPNServer) -> Bool {
+        lhs.id == rhs.id && lhs.address == rhs.address && lhs.port == rhs.port && lhs.serverProtocol == rhs.serverProtocol
+    }
     
     init(
         id: String = UUID().uuidString,
         name: String,
         address: String,
         port: Int,
-        protocol: VPNProtocol,
+        serverProtocol: VPNProtocol,
         username: String? = nil,
         password: String? = nil,
         uuid: String? = nil,
@@ -83,7 +87,7 @@ struct VPNServer: Codable, Identifiable, Equatable {
         self.name = name
         self.address = address
         self.port = port
-        self.protocol = `protocol`
+        self.serverProtocol = serverProtocol
         self.username = username
         self.password = password
         self.uuid = uuid
@@ -113,7 +117,7 @@ struct VPNServer: Codable, Identifiable, Equatable {
     
     // MARK: - Codable Implementation
     private enum CodingKeys: String, CodingKey {
-        case id, name, address, port, protocol
+        case id, name, address, port, proto
         case username, password, uuid
         case encryption, alterId, sni, flow, path, host, type, security
         case publicKey, privateKey, preSharedKey, allowedIPs, endpoint
@@ -129,7 +133,7 @@ struct VPNServer: Codable, Identifiable, Equatable {
         name = try container.decode(String.self, forKey: .name)
         address = try container.decode(String.self, forKey: .address)
         port = try container.decode(Int.self, forKey: .port)
-        protocol = try container.decode(VPNProtocol.self, forKey: .protocol)
+        self.serverProtocol = try container.decode(VPNProtocol.self, forKey: .proto)
         
         username = try container.decodeIfPresent(String.self, forKey: .username)
         password = try container.decodeIfPresent(String.self, forKey: .password)
@@ -177,7 +181,7 @@ struct VPNServer: Codable, Identifiable, Equatable {
         try container.encode(name, forKey: .name)
         try container.encode(address, forKey: .address)
         try container.encode(port, forKey: .port)
-        try container.encode(protocol, forKey: .protocol)
+        try container.encode(serverProtocol, forKey: .proto)
         
         try container.encodeIfPresent(username, forKey: .username)
         try container.encodeIfPresent(password, forKey: .password)
@@ -236,7 +240,7 @@ struct VPNServer: Codable, Identifiable, Equatable {
     }
     
     var connectionURL: String {
-        switch `protocol` {
+        switch serverProtocol {
         case .shadowsocks:
             return generateShadowsocksURL()
         case .vmess:
@@ -329,7 +333,7 @@ struct VPNServer: Codable, Identifiable, Equatable {
             "name": name,
             "address": address,
             "port": port,
-            "protocol": `protocol`.rawValue,
+            "proto": serverProtocol.rawValue,
             "ping": ping,
             "isActive": isActive,
             "bytesTransferred": bytesTransferred,
@@ -373,7 +377,7 @@ struct VPNServer: Codable, Identifiable, Equatable {
               let name = dict["name"] as? String,
               let address = dict["address"] as? String,
               let port = dict["port"] as? Int,
-              let protocolString = dict["protocol"] as? String,
+              let protocolString = dict["proto"] as? String,
               let vpnProtocol = VPNProtocol(rawValue: protocolString) else {
             return nil
         }
@@ -383,7 +387,7 @@ struct VPNServer: Codable, Identifiable, Equatable {
             name: name,
             address: address,
             port: port,
-            protocol: vpnProtocol
+            serverProtocol: vpnProtocol
         )
         
         // Set optional fields

@@ -283,7 +283,7 @@ final class ImportViewModel: ObservableObject {
             name: name,
             address: host,
             port: port,
-            protocol: .shadowsocks,
+            serverProtocol: .shadowsocks,
             password: password,
             encryption: method
         )
@@ -301,7 +301,7 @@ final class ImportViewModel: ObservableObject {
             name: name,
             address: host,
             port: port,
-            protocol: .vmess,
+            serverProtocol: .vmess,
             uuid: uuid
         )
     }
@@ -318,7 +318,7 @@ final class ImportViewModel: ObservableObject {
             name: name,
             address: host,
             port: port,
-            protocol: .trojan,
+            serverProtocol: .trojan,
             password: password
         )
     }
@@ -335,7 +335,7 @@ final class ImportViewModel: ObservableObject {
             name: name,
             address: host,
             port: port,
-            protocol: .vless,
+            serverProtocol: .vless,
             uuid: uuid
         )
     }
@@ -394,7 +394,7 @@ final class ImportViewModel: ObservableObject {
             name: name,
             address: address,
             port: port,
-            protocol: vpnProtocol,
+            serverProtocol: vpnProtocol,
             username: dict["username"],
             password: dict["password"],
             uuid: dict["uuid"],
@@ -422,7 +422,7 @@ final class ImportViewModel: ObservableObject {
             return nil
         }
         
-        let protocolType = VPNProtocol(rawValue: outbound.protocol?.lowercased() ?? "vmess") ?? .vmess
+        let protocolType = VPNProtocol(rawValue: outbound.protocolValue?.lowercased() ?? "vmess") ?? .vmess
         let name = outbound.tag ?? "\(vnext.address):\(vnext.port)"
         
         return VPNServer(
@@ -430,7 +430,7 @@ final class ImportViewModel: ObservableObject {
             name: name,
             address: vnext.address,
             port: vnext.port,
-            protocol: protocolType,
+            serverProtocol: protocolType,
             uuid: vnext.users?.first?.id
         )
     }
@@ -455,8 +455,14 @@ struct V2RayConfig: Codable {
 
 struct V2RayOutbound: Codable {
     let tag: String?
-    let protocol: String?
+    let protocolValue: String?
     let settings: V2RayOutboundSettings?
+    
+    enum CodingKeys: String, CodingKey {
+        case tag
+        case protocolValue = "protocol"
+        case settings
+    }
 }
 
 struct V2RayOutboundSettings: Codable {

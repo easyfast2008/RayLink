@@ -4,40 +4,12 @@ import Combine
 // Global types imported via RayLinkTypes
 
 // MARK: - Navigation Destination
-public enum NavigationDestination: Hashable {
+enum NavigationDestination: Hashable {
     case home
     case serverList
-    case serverDetail(VPNServer)
     case addServer
-    case editServer(VPNServer)
     case settings
-    case settingsSection(SettingsSection)
-    case import
-    case importResult([VPNServer])
-    case speedTest
-    case speedTestResult(SpeedTestResult)
-    case logs
-    case about
-    case help
-    case subscription
-    case addSubscription
-    case trustedNetworks
-    case routingRules
-    case dataUsage
-    case privacy
-    case diagnostics
-    case backup
-    
-    // Settings sections
-    public enum SettingsSection: Hashable {
-        case connection
-        case privacy
-        case advanced
-        case appearance
-        case notifications
-        case subscription
-        case about
-    }
+    case importConfig
 }
 
 // MARK: - Navigation Coordinator
@@ -109,7 +81,7 @@ public final class NavigationCoordinator: ObservableObject {
         case .settings:
             selectedTab = Tab.settings.rawValue
             path = NavigationPath()
-        case .addServer, .import, .speedTest:
+        case .addServer, .importConfig, .speedTest:
             presentSheet(destination)
         default:
             path.append(destination)
@@ -178,9 +150,9 @@ public final class NavigationCoordinator: ObservableObject {
             SettingsView()
         case .settingsSection(let section):
             settingsView(for: section)
-        case .import:
+        case .importConfig:
             ImportView()
-        case .importResult(let servers):
+        case .importConfigResult(let servers):
             ImportResultView(servers: servers)
         case .speedTest:
             SpeedTestView()
@@ -250,7 +222,7 @@ public final class NavigationCoordinator: ObservableObject {
             if let urlParam = components.queryItems?.first(where: { $0.name == "url" })?.value,
                let importURL = URL(string: urlParam) {
                 // Handle subscription URL import
-                navigate(to: .import)
+                navigate(to: .importConfig)
             }
             return true
         case "server":
@@ -320,199 +292,3 @@ public struct AlertButton {
     }
 }
 
-// MARK: - Placeholder Views (These would be implemented separately)
-struct ServerDetailView: View {
-    let server: VPNServer
-    
-    var body: some View {
-        VStack {
-            Text("Server Detail")
-            Text(server.name)
-        }
-        .navigationTitle(server.name)
-    }
-}
-
-struct EditServerView: View {
-    let server: VPNServer
-    let onSave: (VPNServer) -> Void
-    
-    var body: some View {
-        VStack {
-            Text("Edit Server")
-            Text(server.name)
-        }
-        .navigationTitle("Edit Server")
-    }
-}
-
-struct ImportResultView: View {
-    let servers: [VPNServer]
-    
-    var body: some View {
-        VStack {
-            Text("Import Result")
-            Text("\(servers.count) servers imported")
-        }
-        .navigationTitle("Import Result")
-    }
-}
-
-struct SpeedTestView: View {
-    var body: some View {
-        VStack {
-            Text("Speed Test")
-        }
-        .navigationTitle("Speed Test")
-    }
-}
-
-struct SpeedTestResultView: View {
-    let result: SpeedTestResult
-    
-    var body: some View {
-        VStack {
-            Text("Speed Test Result")
-            Text("Download: \(result.downloadSpeedFormatted)")
-            Text("Upload: \(result.uploadSpeedFormatted)")
-            Text("Ping: \(result.ping)ms")
-        }
-        .navigationTitle("Speed Test Result")
-    }
-}
-
-struct LogsView: View {
-    var body: some View {
-        VStack {
-            Text("Logs")
-        }
-        .navigationTitle("Logs")
-    }
-}
-
-struct AboutView: View {
-    var body: some View {
-        VStack {
-            Text("About RayLink")
-        }
-        .navigationTitle("About")
-    }
-}
-
-struct HelpView: View {
-    var body: some View {
-        VStack {
-            Text("Help & Support")
-        }
-        .navigationTitle("Help")
-    }
-}
-
-struct SubscriptionView: View {
-    var body: some View {
-        VStack {
-            Text("Subscriptions")
-        }
-        .navigationTitle("Subscriptions")
-    }
-}
-
-struct AddSubscriptionView: View {
-    var body: some View {
-        VStack {
-            Text("Add Subscription")
-        }
-        .navigationTitle("Add Subscription")
-    }
-}
-
-struct RoutingRulesView: View {
-    var body: some View {
-        VStack {
-            Text("Routing Rules")
-        }
-        .navigationTitle("Routing Rules")
-    }
-}
-
-struct PrivacyView: View {
-    var body: some View {
-        VStack {
-            Text("Privacy")
-        }
-        .navigationTitle("Privacy")
-    }
-}
-
-struct DiagnosticsView: View {
-    var body: some View {
-        VStack {
-            Text("Diagnostics")
-        }
-        .navigationTitle("Diagnostics")
-    }
-}
-
-struct BackupView: View {
-    var body: some View {
-        VStack {
-            Text("Backup & Restore")
-        }
-        .navigationTitle("Backup")
-    }
-}
-
-// Settings Detail Views
-struct ConnectionSettingsView: View {
-    var body: some View {
-        VStack {
-            Text("Connection Settings")
-        }
-        .navigationTitle("Connection")
-    }
-}
-
-struct PrivacySettingsView: View {
-    var body: some View {
-        VStack {
-            Text("Privacy Settings")
-        }
-        .navigationTitle("Privacy")
-    }
-}
-
-struct AdvancedSettingsView: View {
-    var body: some View {
-        VStack {
-            Text("Advanced Settings")
-        }
-        .navigationTitle("Advanced")
-    }
-}
-
-struct AppearanceSettingsView: View {
-    var body: some View {
-        VStack {
-            Text("Appearance Settings")
-        }
-        .navigationTitle("Appearance")
-    }
-}
-
-struct NotificationSettingsView: View {
-    var body: some View {
-        VStack {
-            Text("Notification Settings")
-        }
-        .navigationTitle("Notifications")
-    }
-}
-
-struct SubscriptionSettingsView: View {
-    var body: some View {
-        VStack {
-            Text("Subscription Settings")
-        }
-        .navigationTitle("Subscriptions")
-    }
-}

@@ -6,10 +6,10 @@ import os.log
 class XrayManager: ObservableObject {
     static let shared = XrayManager()
     
-    @Published var connectionStatus: VPNConnectionStatus = .disconnected
+    @Published var connectionStatus: TunnelStatus = .disconnected
     @Published var currentServer: VPNServer?
     @Published var connectionTime: TimeInterval = 0
-    @Published var statistics: ConnectionStatistics = ConnectionStatistics()
+    @Published var statistics: TunnelConnectionStatistics = TunnelConnectionStatistics()
     
     private let logger = Logger(subsystem: "com.raylink.app", category: "XrayManager")
     private var tunnelManager: NETunnelProviderManager?
@@ -65,7 +65,7 @@ class XrayManager: ObservableObject {
         currentServer = nil
     }
     
-    func getCurrentStatistics() async -> ConnectionStatistics? {
+    func getCurrentStatistics() async -> TunnelConnectionStatistics? {
         guard let connection = tunnelManager?.connection as? NETunnelProviderSession else {
             return nil
         }
@@ -78,7 +78,7 @@ class XrayManager: ObservableObject {
                 try connection.sendProviderMessage(messageData ?? Data()) { response in
                     if let response = response,
                        let stats = try? JSONDecoder().decode(TunnelStatistics.self, from: response) {
-                        let connectionStats = ConnectionStatistics(
+                        let connectionStats = TunnelConnectionStatistics(
                             bytesReceived: stats.bytesReceived,
                             bytesSent: stats.bytesSent,
                             connectedTime: stats.connectedTime,
@@ -247,7 +247,7 @@ class XrayManager: ObservableObject {
         statisticsTimer = nil
         
         connectionTime = 0
-        statistics = ConnectionStatistics()
+        statistics = TunnelConnectionStatistics()
     }
     
     private func performSystemPing(to address: String) async -> Int {
@@ -272,7 +272,7 @@ class XrayManager: ObservableObject {
 
 // MARK: - Supporting Types
 
-enum VPNConnectionStatus {
+enum TunnelStatus {
     case disconnected
     case connecting
     case connected
@@ -292,7 +292,7 @@ enum VPNConnectionStatus {
     }
 }
 
-struct ConnectionStatistics {
+struct TunnelConnectionStatistics {
     let bytesReceived: UInt64
     let bytesSent: UInt64
     let connectedTime: TimeInterval

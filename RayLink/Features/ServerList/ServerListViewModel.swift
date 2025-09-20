@@ -136,8 +136,7 @@ final class ServerListViewModel: ObservableObject {
         guard let storageManager = storageManager else { return }
         
         do {
-            if let serverData = try storageManager.load([String: Any].self, for: .selectedServer),
-               let server = VPNServer.from(dictionary: serverData) {
+            if let server = try storageManager.load(VPNServer.self, for: .selectedServer) {
                 selectedServer = server
             } else {
                 selectedServer = servers.first
@@ -165,8 +164,7 @@ final class ServerListViewModel: ObservableObject {
               let selectedServer = selectedServer else { return }
         
         do {
-            let serverData = selectedServer.toDictionary()
-            try storageManager.save(serverData, for: .selectedServer)
+            try storageManager.save(selectedServer, for: .selectedServer)
         } catch {
             showErrorMessage("Failed to save selected server: \(error.localizedDescription)")
         }
@@ -216,23 +214,3 @@ final class ServerListViewModel: ObservableObject {
     }
 }
 
-// MARK: - VPN Connection Status Extension
-extension VPNConnectionStatus {
-    var isConnected: Bool {
-        switch self {
-        case .connected:
-            return true
-        default:
-            return false
-        }
-    }
-    
-    var isConnecting: Bool {
-        switch self {
-        case .connecting:
-            return true
-        default:
-            return false
-        }
-    }
-}

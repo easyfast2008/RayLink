@@ -27,16 +27,8 @@ public final class DependencyContainer: DependencyContainerProtocol, ObservableO
     }()
     
     lazy var vpnManager: VPNManagerProtocol = {
-        // Check if we should use mock VPN for development
-        let useMockVPN = !hasVPNEntitlement()
-        
-        if useMockVPN {
-            print("⚠️  Using Mock VPN Manager (no paid developer account detected)")
-            return MockVPNManager()
-        } else {
-            print("✅ Using Real VPN Manager")
-            return VPNManager()
-        }
+        // Always use the mock VPN manager in this build configuration
+        MockVPNManager()
     }()
     
     // MARK: - Additional Services
@@ -72,20 +64,6 @@ public final class DependencyContainer: DependencyContainerProtocol, ObservableO
     private func setupDependencies() {
         // Configure dependencies that need initialization
         configureServices()
-    }
-    
-    private func hasVPNEntitlement() -> Bool {
-        // Check if the app has VPN entitlements (requires paid developer account)
-        // This will return false for personal Apple IDs
-        #if targetEnvironment(simulator)
-            return false // Always use mock on simulator
-        #else
-            // Check for NetworkExtension entitlement
-            if let entitlements = Bundle.main.infoDictionary?["com.apple.developer.networking.networkextension"] as? [String] {
-                return entitlements.contains("packet-tunnel-provider")
-            }
-            return false
-        #endif
     }
     
     private func configureServices() {

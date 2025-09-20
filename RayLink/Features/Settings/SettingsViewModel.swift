@@ -132,6 +132,8 @@ final class SettingsViewModel: ObservableObject {
             userInterfaceStyle = .light
         case .dark:
             userInterfaceStyle = .dark
+        case .aurora:
+            userInterfaceStyle = .unspecified
         case .system:
             userInterfaceStyle = .unspecified
         }

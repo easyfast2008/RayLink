@@ -194,7 +194,7 @@ final class VPNManager: NSObject, VPNManagerProtocol, ObservableObject {
     
     // MARK: - Private Configuration Methods
     private func configureVPN(with server: VPNServer) async throws {
-        switch server.protocol {
+        switch server.serverProtocol {
         case .shadowsocks:
             try await configureShadowsocks(server)
         case .vmess:

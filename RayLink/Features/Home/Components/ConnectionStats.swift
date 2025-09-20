@@ -1,7 +1,7 @@
 import SwiftUI
 import Foundation
 // MARK: - Connection Statistics Model
-struct ConnectionStatistics {
+struct ConnectionMetrics {
     let uploadSpeed: Int64      // bytes per second
     let downloadSpeed: Int64    // bytes per second
     let totalUploaded: Int64    // total bytes uploaded
@@ -10,7 +10,7 @@ struct ConnectionStatistics {
     let location: String
     let serverName: String
     
-    static let empty = ConnectionStatistics(
+    static let empty = ConnectionMetrics(
         uploadSpeed: 0,
         downloadSpeed: 0,
         totalUploaded: 0,
@@ -23,7 +23,7 @@ struct ConnectionStatistics {
 
 // MARK: - Connection Stats Component
 struct ConnectionStats: View {
-    let statistics: ConnectionStatistics
+    let statistics: ConnectionMetrics
     let isConnected: Bool
     
     @State private var animationPhase: Double = 0
@@ -412,7 +412,7 @@ extension Int64 {
 
 // MARK: - Preview
 struct ConnectionStats_Previews: PreviewProvider {
-    static let sampleStats = ConnectionStatistics(
+    static let sampleStats = ConnectionMetrics(
         uploadSpeed: 1024 * 1024 * 5,    // 5 MB/s
         downloadSpeed: 1024 * 1024 * 25, // 25 MB/s
         totalUploaded: 1024 * 1024 * 150,   // 150 MB

@@ -54,7 +54,7 @@ struct ServerCell: View {
                             .lineLimit(1)
                         
                         // Protocol badge
-                        Text(server.protocol.rawValue.uppercased())
+                        Text(server.serverProtocol.rawValue.uppercased())
                             .font(AppTheme.Typography.caption)
                             .foregroundColor(protocolColor)
                             .padding(.horizontal, 6)
@@ -259,7 +259,7 @@ struct ServerCell: View {
     }
     
     private var protocolColor: Color {
-        switch server.protocol {
+        switch server.serverProtocol {
         case .shadowsocks:
             return AppTheme.Colors.aurora.blue
         case .vmess, .vless:

@@ -287,7 +287,7 @@ struct ImportedServerRowView: View {
             
             Spacer()
             
-            Text(server.protocol.rawValue.uppercased())
+            Text(server.serverProtocol.rawValue.uppercased())
                 .font(.caption2)
                 .padding(.horizontal, 6)
                 .padding(.vertical, 2)
@@ -302,7 +302,7 @@ struct ImportedServerRowView: View {
     }
     
     private var protocolColor: Color {
-        switch server.protocol {
+        switch server.serverProtocol {
         case .shadowsocks:
             return .blue
         case .vmess, .vless:

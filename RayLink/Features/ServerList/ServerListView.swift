@@ -294,7 +294,7 @@ struct ServerListView: View {
             servers = servers.filter { server in
                 server.name.localizedCaseInsensitiveContains(searchText) ||
                 server.address.localizedCaseInsensitiveContains(searchText) ||
-                server.protocol.rawValue.localizedCaseInsensitiveContains(searchText) ||
+                server.serverProtocol.rawValue.localizedCaseInsensitiveContains(searchText) ||
                 server.displayLocation.localizedCaseInsensitiveContains(searchText) ||
                 (server.provider?.localizedCaseInsensitiveContains(searchText) ?? false)
             }
@@ -476,7 +476,7 @@ struct ServerRowView: View {
                         .foregroundColor(AppTheme.Colors.secondary)
                 }
                 
-                Text(server.protocol.rawValue.uppercased())
+                Text(server.serverProtocol.rawValue.uppercased())
                     .font(.caption2)
                     .padding(.horizontal, 6)
                     .padding(.vertical, 2)
@@ -531,7 +531,7 @@ struct ServerRowView: View {
     }
     
     private var protocolColor: Color {
-        switch server.protocol {
+        switch server.serverProtocol {
         case .shadowsocks:
             return .blue
         case .vmess, .vless:
@@ -644,7 +644,7 @@ struct AddServerView: View {
             name: name,
             address: address,
             port: Int(port) ?? 0,
-            protocol: selectedProtocol,
+            serverProtocol: selectedProtocol,
             username: needsUsername ? username : nil,
             password: needsPassword ? password : nil,
             uuid: needsUUID ? uuid : nil,

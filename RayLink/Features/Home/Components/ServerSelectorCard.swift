@@ -165,7 +165,7 @@ struct ServerSelectorCard: View {
                 }
                 
                 // Protocol badge
-                protocolBadge(for: server.protocol)
+                protocolBadge(for: server.serverProtocol)
                 
                 // Premium indicator if needed
                 if server.isPremium {
@@ -257,7 +257,7 @@ struct ServerSelectorCard: View {
             // Subtle color tint based on server
             if let server = server {
                 RoundedRectangle(cornerRadius: AppTheme.CornerRadius.xl)
-                    .fill(AppTheme.Colors.protocolColor(for: server.protocol).opacity(0.05))
+                    .fill(AppTheme.Colors.protocolColor(for: server.serverProtocol).opacity(0.05))
             }
         }
     }
@@ -283,14 +283,14 @@ struct ServerSelectorCard: View {
     // MARK: - Color Properties
     private var shadowColor: Color {
         if let server = server {
-            return AppTheme.Colors.protocolColor(for: server.protocol).opacity(0.2)
+            return AppTheme.Colors.protocolColor(for: server.serverProtocol).opacity(0.2)
         }
         return Color.black.opacity(0.1)
     }
     
     private var accentGlow: Color {
         if let server = server {
-            return AppTheme.Colors.protocolColor(for: server.protocol).opacity(glowIntensity)
+            return AppTheme.Colors.protocolColor(for: server.serverProtocol).opacity(glowIntensity)
         }
         return AppTheme.Colors.accent.opacity(glowIntensity)
     }
@@ -385,7 +385,7 @@ struct ServerSelectorCard_Previews: PreviewProvider {
         name: "ViperFastFinland",
         address: "fi1.example.com",
         port: 443,
-        protocol: .shadowsocks,
+        serverProtocol: .shadowsocks,
         ping: 45,
         isActive: true
     )

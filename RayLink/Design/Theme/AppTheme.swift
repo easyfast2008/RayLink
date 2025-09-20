@@ -165,6 +165,8 @@ public struct AppTheme {
         static let cardBackground = Color.white.opacity(0.1)
         static let surface = Color.white.opacity(0.05)
         static let glassEffect = Color.white.opacity(0.2)
+        static let glassMorphicFill = Color.white.opacity(0.12)
+        static let auroraPalette: [Color] = [auroraBlue, auroraViolet, auroraGreen, auroraPink]
         
         // Text Colors with better contrast
         static let text = Color("TextColor")
@@ -192,8 +194,8 @@ public struct AppTheme {
         static let ikev2 = auroraGold
         
         // Helper method to get protocol color
-        static func protocolColor(for protocol: VPNProtocol) -> Color {
-            switch `protocol` {
+        static func protocolColor(for vpnProtocol: VPNProtocol) -> Color {
+            switch vpnProtocol {
             case .shadowsocks:
                 return shadowsocks
             case .vmess:
@@ -259,6 +261,7 @@ public struct AppTheme {
         public static let xs: CGFloat = 4
         public static let sm: CGFloat = 8
         public static let md: CGFloat = 12
+        public static let medium: CGFloat = 12
         public static let lg: CGFloat = 16
         public static let xl: CGFloat = 20
         public static let xxl: CGFloat = 24
@@ -303,6 +306,7 @@ public struct AppTheme {
         // Wave Flow Animations
         static let waveFlow = SwiftUI.Animation.easeInOut(duration: 3.0).repeatForever(autoreverses: false)
         static let ambientFloat = SwiftUI.Animation.easeInOut(duration: 4.0).repeatForever(autoreverses: true)
+        static let auroraFlow = SwiftUI.Animation.easeInOut(duration: 6.0).repeatForever(autoreverses: true)
         
         // Transition Animations
         static let morphTransition = SwiftUI.Animation.spring(response: 0.5, dampingFraction: 0.8, blendDuration: 0.1)

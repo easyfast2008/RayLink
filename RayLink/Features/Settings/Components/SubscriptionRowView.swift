@@ -280,7 +280,7 @@ struct AddSubscriptionView: View {
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .keyboardType(.URL)
                         .autocapitalization(.none)
-                        .autocorrectionType(.no)
+                        .autocorrectionDisabled(true)
                 }
                 
                 VStack(alignment: .leading, spacing: 8) {

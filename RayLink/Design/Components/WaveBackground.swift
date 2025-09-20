@@ -196,6 +196,13 @@ struct WaveShape: Shape {
     let frequency: CGFloat
     let phase: CGFloat
     
+    init(offset: CGFloat, amplitude: CGFloat, frequency: CGFloat, phase: CGFloat = 0) {
+        self.offset = offset
+        self.amplitude = amplitude
+        self.frequency = frequency
+        self.phase = phase
+    }
+    
     var animatableData: CGFloat {
         get { offset }
         set { offset = newValue }

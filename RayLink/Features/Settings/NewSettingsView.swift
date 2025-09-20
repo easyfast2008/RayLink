@@ -111,9 +111,7 @@ struct NewSettingsView: View {
         VStack(spacing: 16) {
             // Tools Section
             VStack(spacing: 0) {
-                Button(action: { 
-                    coordinator.showSpeedTest() 
-                }) {
+                Button(action: { }) {
                     settingsRow(
                         title: "Speed Test",
                         subtitle: "Test Xray configs, measure their delays.",
@@ -128,9 +126,7 @@ struct NewSettingsView: View {
                     .background(AppTheme.Colors.textSecondary.opacity(0.2))
                     .padding(.leading, 56)
                 
-                Button(action: { 
-                    viewModel.cleanConfigs() 
-                }) {
+                Button(action: { viewModel.cleanConfigs() }) {
                     settingsRow(
                         title: "Clean Configs",
                         subtitle: "Test Xray configs, find the unreachable servers in these configs, and delete them.",

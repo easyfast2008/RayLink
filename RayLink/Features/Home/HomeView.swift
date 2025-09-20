@@ -333,40 +333,6 @@ public struct HomeView: View {
     }
 }
 
-// MARK: - Wave Shape
-struct WaveShape: Shape {
-    let frequency: Double
-    let amplitude: Double
-    var offset: Double
-    
-    var animatableData: Double {
-        get { offset }
-        set { offset = newValue }
-    }
-    
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        let stepSize = rect.width / 200
-        
-        path.move(to: CGPoint(x: 0, y: rect.midY))
-        
-        for x in stride(from: 0, through: rect.width, by: stepSize) {
-            let relativeX = x / rect.width
-            let sine = sin(relativeX * frequency * 2 * .pi + offset)
-            let y = rect.midY + sine * amplitude
-            
-            path.addLine(to: CGPoint(x: x, y: y))
-        }
-        
-        // Complete the shape to fill
-        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
-        path.addLine(to: CGPoint(x: 0, y: rect.maxY))
-        path.closeSubpath()
-        
-        return path
-    }
-}
-
 // MARK: - Scroll Offset Preference
 struct ScrollOffsetPreferenceKey: PreferenceKey {
     static var defaultValue: CGFloat = 0

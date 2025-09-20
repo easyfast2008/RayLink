@@ -144,10 +144,10 @@ final class MockVPNManager: VPNManagerProtocol, ObservableObject {
                 name: "Mock US Server",
                 address: "us.mock.vpn",
                 port: 443,
-                protocol: .vmess,
+                serverProtocol: .vmess,
                 ping: 45,
                 isActive: true,
-                location: "United States",
+                country: "United States",
                 flag: "🇺🇸"
             ),
             VPNServer(
@@ -155,10 +155,10 @@ final class MockVPNManager: VPNManagerProtocol, ObservableObject {
                 name: "Mock EU Server",
                 address: "eu.mock.vpn",
                 port: 443,
-                protocol: .vless,
+                serverProtocol: .vless,
                 ping: 65,
                 isActive: true,
-                location: "Germany",
+                country: "Germany",
                 flag: "🇩🇪"
             ),
             VPNServer(
@@ -166,10 +166,10 @@ final class MockVPNManager: VPNManagerProtocol, ObservableObject {
                 name: "Mock Asia Server",
                 address: "asia.mock.vpn",
                 port: 443,
-                protocol: .trojan,
+                serverProtocol: .trojan,
                 ping: 120,
                 isActive: true,
-                location: "Singapore",
+                country: "Singapore",
                 flag: "🇸🇬"
             )
         ]

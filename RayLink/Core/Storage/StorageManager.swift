@@ -7,6 +7,11 @@ protocol StorageManagerProtocol {
     func load<T: Codable>(_ type: T.Type, for key: StorageKey) throws -> T?
     func delete(for key: StorageKey) throws
     func exists(for key: StorageKey) -> Bool
+    func saveServers(_ servers: [VPNServer]) throws
+    func loadServers() throws -> [VPNServer]
+    func saveUserSettings(_ settings: UserSettings) throws
+    func loadUserSettings() throws -> UserSettings
+    func clearAllData()
 }
 
 // MARK: - Storage Keys

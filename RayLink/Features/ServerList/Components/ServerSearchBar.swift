@@ -68,10 +68,10 @@ struct ServerSearchBar: View {
                 .padding(.horizontal, AppTheme.Spacing.md)
                 .padding(.vertical, AppTheme.Spacing.sm)
                 .background(
-                    RoundedRectangle(cornerRadius: AppTheme.CornerRadius.medium)
+                    RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
                         .fill(AppTheme.Colors.glassMorphicFill)
                         .overlay(
-                            RoundedRectangle(cornerRadius: AppTheme.CornerRadius.medium)
+                            RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
                                 .stroke(
                                     isSearchFocused ? 
                                     AppTheme.AuroraGradients.primary.opacity(0.5) :
@@ -128,19 +128,10 @@ struct ServerSearchBar: View {
     }
     
     private func protocolColor(for protocol: VPNProtocol) -> Color {
-        switch `protocol` {
-        case .shadowsocks:
-            return AppTheme.Colors.aurora.blue
-        case .vmess, .vless:
-            return AppTheme.Colors.aurora.violet
-        case .trojan:
-            return AppTheme.Colors.aurora.pink
-        case .ikev2:
-            return AppTheme.Colors.warning
-        case .wireguard:
-            return AppTheme.Colors.aurora.green
-        }
+        AppTheme.Colors.protocolColor(for: `protocol`)
     }
+
+
 }
 
 struct FilterChip: View {

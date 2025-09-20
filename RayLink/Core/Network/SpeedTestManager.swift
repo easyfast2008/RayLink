@@ -9,7 +9,7 @@ class SpeedTestManager: ObservableObject {
     @Published var isRunning = false
     @Published var progress: Double = 0.0
     @Published var currentTest: String = ""
-    @Published var results: [SpeedTestResult] = []
+    @Published var results: [SpeedTestMeasurement] = []
     
     private let logger = Logger(subsystem: "com.raylink.app", category: "SpeedTestManager")
     private var currentTestTask: Task<Void, Never>?
@@ -18,7 +18,7 @@ class SpeedTestManager: ObservableObject {
     
     // MARK: - Public Interface
     
-    func testServer(_ server: VPNServer) async -> SpeedTestResult {
+    func testServer(_ server: VPNServer) async -> SpeedTestMeasurement {
         logger.info("Testing server: \(server.name)")
         
         let startTime = Date()
@@ -54,7 +54,7 @@ class SpeedTestManager: ObservableObject {
         progress = 1.0
         currentTest = "Completed"
         
-        let result = SpeedTestResult(
+        let result = SpeedTestMeasurement(
             server: server,
             latency: latency,
             downloadSpeed: downloadSpeed,
@@ -122,7 +122,7 @@ class SpeedTestManager: ObservableObject {
         isRunning = false
     }
     
-    func sortedResults(by sortType: SpeedTestSortType) -> [SpeedTestResult] {
+    func sortedResults(by sortType: SpeedTestSortType) -> [SpeedTestMeasurement] {
         switch sortType {
         case .latency:
             return results.sorted { (a, b) in
@@ -261,7 +261,7 @@ class SpeedTestManager: ObservableObject {
 
 // MARK: - Supporting Types
 
-struct SpeedTestResult: Identifiable, Codable {
+struct SpeedTestMeasurement: Identifiable, Codable {
     let id = UUID()
     let server: VPNServer
     let latency: Int // in milliseconds, -1 if failed
@@ -456,7 +456,7 @@ struct SpeedTestView: View {
             
             LazyVStack(spacing: 8) {
                 ForEach(speedTestManager.sortedResults(by: sortType)) { result in
-                    SpeedTestResultRow(result: result)
+                    SpeedTestMeasurementRow(result: result)
                 }
             }
         }
@@ -498,8 +498,8 @@ struct SpeedTestView: View {
     }
 }
 
-struct SpeedTestResultRow: View {
-    let result: SpeedTestResult
+struct SpeedTestMeasurementRow: View {
+    let result: SpeedTestMeasurement
     
     var body: some View {
         HStack {
