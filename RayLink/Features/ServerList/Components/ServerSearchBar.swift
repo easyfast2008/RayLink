@@ -42,7 +42,7 @@ struct ServerSearchBar: View {
                             .onSubmit {
                                 isSearchFocused = false
                             }
-                            .onChange(of: searchText) { newValue in
+                            .onChangeCompat(of: searchText) { newValue in
                                 withAnimation(AppTheme.Animation.gentleSpring) {
                                     showClearButton = !newValue.isEmpty
                                 }
@@ -73,11 +73,12 @@ struct ServerSearchBar: View {
                         .overlay(
                             RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
                                 .stroke(
-                                    isSearchFocused ? 
-                                    AppTheme.AuroraGradients.primary.opacity(0.5) :
+                                    isSearchFocused ?
+                                    AppTheme.AuroraGradients.primary :
                                     Color.clear,
                                     lineWidth: 1
                                 )
+                                .opacity(isSearchFocused ? 0.5 : 1)
                         )
                 )
                 .onTapGesture {
@@ -99,14 +100,14 @@ struct ServerSearchBar: View {
                         }
                         
                         // Individual protocol chips
-                        ForEach(VPNProtocol.allCases, id: \.self) { protocol in
+                        ForEach(VPNProtocol.allCases, id: \.self) { vpnProtocol in
                             FilterChip(
-                                title: protocol.rawValue.capitalized,
-                                isSelected: selectedProtocol == protocol,
-                                color: protocolColor(for: protocol)
+                                title: vpnProtocol.rawValue.capitalized,
+                                isSelected: selectedProtocol == vpnProtocol,
+                                color: protocolColor(for: vpnProtocol)
                             ) {
                                 withAnimation(AppTheme.Animation.fluidSpring) {
-                                    selectedProtocol = selectedProtocol == protocol ? nil : protocol
+                                    selectedProtocol = selectedProtocol == vpnProtocol ? nil : vpnProtocol
                                 }
                             }
                         }
@@ -127,8 +128,8 @@ struct ServerSearchBar: View {
         }
     }
     
-    private func protocolColor(for protocol: VPNProtocol) -> Color {
-        AppTheme.Colors.protocolColor(for: `protocol`)
+    private func protocolColor(for vpnProtocol: VPNProtocol) -> Color {
+        AppTheme.Colors.protocolColor(for: vpnProtocol)
     }
 
 

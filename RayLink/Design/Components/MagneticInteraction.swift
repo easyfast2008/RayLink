@@ -237,14 +237,14 @@ struct MagneticButton<Content: View>: View {
     let action: () -> Void
     let content: () -> Content
     let magneticStrength: CGFloat
-    let style: MagneticButtonStyle
+    let style: MagneticButtonVisualStyle
     
     @State private var isPressed: Bool = false
     @State private var isMagneticallyActivated: Bool = false
     
     init(
         magneticStrength: CGFloat = 1.2,
-        style: MagneticButtonStyle = .glassmorphic,
+        style: MagneticButtonVisualStyle = .glassmorphic,
         action: @escaping () -> Void,
         @ViewBuilder content: @escaping () -> Content
     ) {
@@ -349,7 +349,7 @@ struct MagneticButton<Content: View>: View {
 }
 
 // MARK: - Magnetic Button Style
-enum MagneticButtonStyle {
+enum MagneticButtonVisualStyle {
     case glassmorphic, solid, outlined
 }
 
@@ -410,7 +410,7 @@ struct OrbitMenu: View {
         .onAppear {
             setupOrbitAngles()
         }
-        .onChange(of: isExpanded) { expanded in
+        .onChangeCompat(of: isExpanded) { expanded in
             animateOrbitItems(expanded: expanded)
         }
     }

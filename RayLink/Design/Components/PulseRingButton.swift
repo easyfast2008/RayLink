@@ -49,7 +49,7 @@ struct PulseRingButton: View {
             initializeParticles()
             startAnimations()
         }
-        .onChange(of: connectionState) { _ in
+        .onChangeCompat(of: connectionState) { _ in
             updateAnimationsForState()
         }
     }

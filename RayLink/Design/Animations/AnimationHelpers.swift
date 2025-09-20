@@ -122,7 +122,7 @@ struct PulseModifier: ViewModifier {
                     startPulse()
                 }
             }
-            .onChange(of: isAnimating) { newValue in
+            .onChangeCompat(of: isAnimating) { newValue in
                 if newValue {
                     startPulse()
                 } else {
@@ -159,7 +159,7 @@ struct RotateModifier: ViewModifier {
                     startRotation()
                 }
             }
-            .onChange(of: isAnimating) { newValue in
+            .onChangeCompat(of: isAnimating) { newValue in
                 if newValue {
                     startRotation()
                 } else {
@@ -365,7 +365,7 @@ extension View {
     // Haptic Feedback with Animation
     func hapticFeedback(style: UIImpactFeedbackGenerator.FeedbackStyle = .medium, trigger: some Equatable) -> some View {
         self
-            .onChange(of: trigger) { _ in
+            .onChangeCompat(of: trigger) { _ in
                 let impactFeedback = UIImpactFeedbackGenerator(style: style)
                 impactFeedback.impactOccurred()
             }
@@ -409,7 +409,7 @@ struct LiquidScaleModifier: ViewModifier {
         content
             .scaleEffect(liquidScale)
             .blur(radius: liquidBlur)
-            .onChange(of: isPressed) { pressed in
+            .onChangeCompat(of: isPressed) { pressed in
                 if pressed {
                     withAnimation(AnimationPresets.liquidBounce) {
                         liquidScale = 1.0 + intensity * 0.2
@@ -441,14 +441,14 @@ struct MagneticFieldModifier: ViewModifier {
             .gesture(
                 DragGesture(minimumDistance: 0)
                     .onChanged { value in
-                        let distance = sqrt(pow(value.translation.x, 2) + pow(value.translation.y, 2))
+                        let distance = sqrt(pow(value.translation.width, 2) + pow(value.translation.height, 2))
                         let maxDistance: CGFloat = 50
                         
                         if distance < maxDistance {
                             let strength = (maxDistance - distance) / maxDistance * magneticStrength
                             magneticOffset = CGSize(
-                                width: value.translation.x * strength * 0.3,
-                                height: value.translation.y * strength * 0.3
+                                width: value.translation.width * strength * 0.3,
+                                height: value.translation.height * strength * 0.3
                             )
                             isActivated = true
                         }
@@ -501,7 +501,7 @@ struct GlowPulseModifier: ViewModifier {
                     startGlow()
                 }
             }
-            .onChange(of: isActive) { active in
+            .onChangeCompat(of: isActive) { active in
                 if active {
                     startGlow()
                 } else {
@@ -537,7 +537,7 @@ struct FluidMorphModifier: ViewModifier {
             .scaleEffect(x: morphScale, y: 1.0 / morphScale)
             .rotationEffect(.degrees(morphRotation))
             .animation(AnimationPresets.jellyCubic, value: isTransformed)
-            .onChange(of: isTransformed) { transformed in
+            .onChangeCompat(of: isTransformed) { transformed in
                 if transformed {
                     morphScale = 1.0 + morphIntensity * 0.3
                     morphRotation = morphIntensity * 10
@@ -629,7 +629,7 @@ struct ConnectionPulseView: View {
                 startPulse()
             }
         }
-        .onChange(of: isConnected) { connected in
+        .onChangeCompat(of: isConnected) { connected in
             if connected {
                 startPulse()
             } else {
@@ -669,7 +669,7 @@ struct ConnectingSpinnerView: View {
                     startSpinning()
                 }
             }
-            .onChange(of: isConnecting) { connecting in
+            .onChangeCompat(of: isConnecting) { connecting in
                 if connecting {
                     startSpinning()
                 } else {

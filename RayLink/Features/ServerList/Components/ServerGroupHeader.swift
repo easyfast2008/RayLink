@@ -41,7 +41,8 @@ struct ServerGroupHeader: View {
                                 .fill(AppTheme.Colors.glassMorphicFill)
                                 .overlay(
                                     Capsule()
-                                        .stroke(AppTheme.AuroraGradients.primary.opacity(0.3), lineWidth: 1)
+                                        .stroke(AppTheme.AuroraGradients.primary, lineWidth: 1)
+                                        .opacity(0.3)
                                 )
                         )
                 }
@@ -104,9 +105,10 @@ struct ServerGroupHeader: View {
                 .overlay(
                     RoundedRectangle(cornerRadius: AppTheme.CornerRadius.medium)
                         .stroke(
-                            isExpanded ? AppTheme.AuroraGradients.primary.opacity(0.3) : Color.clear,
+                            isExpanded ? AppTheme.AuroraGradients.primary : Color.clear,
                             lineWidth: 1
                         )
+                        .opacity(isExpanded ? 0.3 : 1)
                 )
         )
         .contentShape(Rectangle())

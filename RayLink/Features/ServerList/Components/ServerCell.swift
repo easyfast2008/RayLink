@@ -38,9 +38,10 @@ struct ServerCell: View {
                 // Flag/Location indicator
                 ZStack {
                     Circle()
-                        .fill(AppTheme.AuroraGradients.primary.opacity(0.1))
+                        .fill(AppTheme.AuroraGradients.primary)
+                        .opacity(0.1)
                         .frame(width: 40, height: 40)
-                    
+
                     Text(server.flag)
                         .font(.system(size: 24))
                 }
@@ -154,10 +155,11 @@ struct ServerCell: View {
                     RoundedRectangle(cornerRadius: AppTheme.CornerRadius.medium)
                         .stroke(
                             isSelected ?
-                            AppTheme.AuroraGradients.primary.opacity(0.5) :
+                            AppTheme.AuroraGradients.primary :
                             Color.clear,
                             lineWidth: 1
                         )
+                        .opacity(isSelected ? 0.5 : 1)
                 )
         )
         .offset(x: dragOffset.width)
