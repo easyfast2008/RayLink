@@ -73,9 +73,10 @@ struct GlassmorphicButtonStyle: ButtonStyle {
                     .overlay(
                         RoundedRectangle(cornerRadius: AppTheme.CornerRadius.large)
                             .stroke(
-                                AppTheme.AuroraGradients.primary.opacity(configuration.isPressed ? 0.45 : 0.3),
+                                AppTheme.AuroraGradients.primary,
                                 lineWidth: 1
                             )
+                            .opacity(configuration.isPressed ? 0.45 : 0.3)
                     )
             )
             .shadow(
@@ -565,8 +566,8 @@ struct PulseRingConnectionStyle: ButtonStyle {
             .background(
                 ZStack {
                     // Connection state background
-                    Circle()
-                        .fill(backgroundGradient)
+                    backgroundGradient
+                        .clipShape(Circle())
                     
                     // Pulse rings for connected state
                     if connectionState == .connected {
@@ -607,14 +608,15 @@ struct PulseRingConnectionStyle: ButtonStyle {
             }
     }
     
+    @ViewBuilder
     private var backgroundGradient: some View {
         switch connectionState {
         case .connected:
-            return AnyView(AppTheme.AuroraGradients.connected)
+            AppTheme.AuroraGradients.connected
         case .connecting:
-            return AnyView(AppTheme.AuroraGradients.connecting)
+            AppTheme.AuroraGradients.connecting
         case .disconnected:
-            return AnyView(AppTheme.AuroraGradients.disconnected)
+            AppTheme.AuroraGradients.disconnected
         }
     }
     

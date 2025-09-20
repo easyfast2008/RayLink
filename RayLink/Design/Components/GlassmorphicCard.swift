@@ -362,7 +362,7 @@ struct ElasticCard<Content: View>: View {
                 .updating($dragAmount) { value, state, _ in
                     state = value.translation
                     
-                    let dragDistance = sqrt(pow(value.translation.x, 2) + pow(value.translation.y, 2))
+                    let dragDistance = sqrt(pow(value.translation.width, 2) + pow(value.translation.height, 2))
                     let stretchFactor = min(1.0 + dragDistance * 0.001, 1.2)
                     
                     withAnimation(AppTheme.Animation.elasticPull) {

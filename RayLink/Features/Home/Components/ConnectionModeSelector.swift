@@ -240,7 +240,7 @@ struct ConnectionModeSelector: View {
     }
     
     // MARK: - Computed Properties
-    private var liquidSelectorGradient: some View {
+    private var liquidSelectorGradient: LinearGradient {
         LinearGradient(
             colors: [
                 selectedMode.color.opacity(0.9),

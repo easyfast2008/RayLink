@@ -441,14 +441,14 @@ struct MagneticFieldModifier: ViewModifier {
             .gesture(
                 DragGesture(minimumDistance: 0)
                     .onChanged { value in
-                        let distance = sqrt(pow(value.translation.x, 2) + pow(value.translation.y, 2))
+                        let distance = sqrt(pow(value.translation.width, 2) + pow(value.translation.height, 2))
                         let maxDistance: CGFloat = 50
                         
                         if distance < maxDistance {
                             let strength = (maxDistance - distance) / maxDistance * magneticStrength
                             magneticOffset = CGSize(
-                                width: value.translation.x * strength * 0.3,
-                                height: value.translation.y * strength * 0.3
+                                width: value.translation.width * strength * 0.3,
+                                height: value.translation.height * strength * 0.3
                             )
                             isActivated = true
                         }

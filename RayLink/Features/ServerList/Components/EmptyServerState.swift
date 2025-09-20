@@ -18,11 +18,11 @@ struct EmptyServerState: View {
             ZStack {
                 // Floating particles background
                 ForEach(0..<8, id: \.self) { index in
+                    let opacity = Double.random(in: 0.1...0.3)
+
                     Circle()
-                        .fill(
-                            AppTheme.AuroraGradients.primary
-                                .opacity(Double.random(in: 0.1...0.3))
-                        )
+                        .fill(AppTheme.AuroraGradients.primary)
+                        .opacity(opacity)
                         .frame(
                             width: CGFloat.random(in: 10...30),
                             height: CGFloat.random(in: 10...30)
@@ -46,11 +46,14 @@ struct EmptyServerState: View {
                     ZStack {
                         // Outer glow rings
                         ForEach(0..<3) { index in
+                            let ringOpacity = 0.3 - Double(index) * 0.1
+
                             Circle()
                                 .stroke(
-                                    AppTheme.AuroraGradients.primary.opacity(0.3 - Double(index) * 0.1),
+                                    AppTheme.AuroraGradients.primary,
                                     lineWidth: 2
                                 )
+                                .opacity(ringOpacity)
                                 .frame(
                                     width: 80 + CGFloat(index * 30),
                                     height: 80 + CGFloat(index * 30)
@@ -161,9 +164,10 @@ struct EmptyServerState: View {
                             .overlay(
                                 RoundedRectangle(cornerRadius: AppTheme.CornerRadius.large)
                                     .stroke(
-                                        AppTheme.AuroraGradients.primary.opacity(0.3),
+                                        AppTheme.AuroraGradients.primary,
                                         lineWidth: 1
                                     )
+                                    .opacity(0.3)
                             )
                     )
                 }

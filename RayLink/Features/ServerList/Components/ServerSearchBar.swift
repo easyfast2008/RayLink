@@ -73,11 +73,12 @@ struct ServerSearchBar: View {
                         .overlay(
                             RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
                                 .stroke(
-                                    isSearchFocused ? 
-                                    AppTheme.AuroraGradients.primary.opacity(0.5) :
+                                    isSearchFocused ?
+                                    AppTheme.AuroraGradients.primary :
                                     Color.clear,
                                     lineWidth: 1
                                 )
+                                .opacity(isSearchFocused ? 0.5 : 1)
                         )
                 )
                 .onTapGesture {
