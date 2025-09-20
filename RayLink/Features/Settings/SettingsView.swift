@@ -157,7 +157,7 @@ struct TrustedNetworksView: View {
     var body: some View {
         List {
             Section {
-                ForEach(viewModel.trustedNetworks, id: \.self) { network in
+                ForEach(viewModel.trustedNetworks) { network in
                     HStack {
                         VStack(alignment: .leading) {
                             Text(network.name)
