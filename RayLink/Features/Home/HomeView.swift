@@ -189,7 +189,7 @@ public struct HomeView: View {
             
             // Add/Import button
             Button(action: {
-                coordinator.navigate(to: .import)
+                coordinator.navigate(to: .importConfig)
             }) {
                 Image(systemName: "plus")
                     .font(.system(size: 20, weight: .medium))

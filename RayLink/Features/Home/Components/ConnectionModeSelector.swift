@@ -82,7 +82,7 @@ struct ConnectionModeSelector: View {
                 updateSelectorPosition(animated: false)
                 startBackgroundAnimation()
             }
-            .onChange(of: selectedMode) { _ in
+            .onChangeCompat(of: selectedMode) { _ in
                 updateSelectorPosition(animated: true)
                 triggerHapticFeedback()
             }
@@ -97,7 +97,7 @@ struct ConnectionModeSelector: View {
         GeometryReader { geometry in
             // Animated wave patterns
             ForEach(0..<3, id: \.self) { index in
-                Wave(
+                DynamicWaveShape(
                     frequency: Double(index + 1) * 0.5,
                     amplitude: 8 + Double(index) * 4,
                     phase: backgroundPhase + Double(index) * .pi / 3
@@ -298,7 +298,7 @@ struct ConnectionModeSelector: View {
 }
 
 // MARK: - Wave Shape
-struct Wave: Shape {
+struct DynamicWaveShape: Shape {
     let frequency: Double
     let amplitude: Double
     var phase: Double

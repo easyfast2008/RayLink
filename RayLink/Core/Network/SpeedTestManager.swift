@@ -1,6 +1,7 @@
 import Foundation
 import Network
 import os.log
+import SwiftUI
 
 @MainActor
 class SpeedTestManager: ObservableObject {
@@ -27,28 +28,23 @@ class SpeedTestManager: ObservableObject {
         var uploadSpeed: Double = 0
         var isReachable = false
         
-        do {
-            // Test connectivity and latency
-            currentTest = "Testing connectivity..."
-            progress = 0.1
-            
-            latency = await measureLatency(server: server)
-            isReachable = latency != -1
-            
-            if isReachable {
-                // Test download speed
-                currentTest = "Testing download speed..."
-                progress = 0.4
-                downloadSpeed = await measureDownloadSpeed(server: server)
-                
-                // Test upload speed
-                currentTest = "Testing upload speed..."
-                progress = 0.7
-                uploadSpeed = await measureUploadSpeed(server: server)
-            }
-            
-        } catch {
-            logger.error("Speed test failed: \(error.localizedDescription)")
+        // Test connectivity and latency
+        currentTest = "Testing connectivity..."
+        progress = 0.1
+
+        latency = await measureLatency(server: server)
+        isReachable = latency != -1
+
+        if isReachable {
+            // Test download speed
+            currentTest = "Testing download speed..."
+            progress = 0.4
+            downloadSpeed = await measureDownloadSpeed(server: server)
+
+            // Test upload speed
+            currentTest = "Testing upload speed..."
+            progress = 0.7
+            uploadSpeed = await measureUploadSpeed(server: server)
         }
         
         progress = 1.0

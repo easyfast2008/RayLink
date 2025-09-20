@@ -42,15 +42,15 @@ struct ConnectionStats: View {
         .onAppear {
             startAnimations()
         }
-        .onChange(of: isConnected) { connected in
+        .onChangeCompat(of: isConnected) { connected in
             if connected {
                 startAnimations()
             }
         }
-        .onChange(of: statistics.uploadSpeed) { _ in
+        .onChangeCompat(of: statistics.uploadSpeed) { _ in
             triggerCounterAnimation()
         }
-        .onChange(of: statistics.downloadSpeed) { _ in
+        .onChangeCompat(of: statistics.downloadSpeed) { _ in
             triggerCounterAnimation()
         }
     }
@@ -395,18 +395,6 @@ struct AnimatedCounter: View {
             animationWorkItem = workItem
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, execute: workItem)
         }
-    }
-}
-
-// MARK: - Extensions
-extension Int64 {
-    func formattedByteSize() -> String {
-        let formatter = ByteCountFormatter()
-        formatter.countStyle = .binary
-        formatter.includesUnit = true
-        formatter.includesCount = true
-        
-        return formatter.string(fromByteCount: self)
     }
 }
 

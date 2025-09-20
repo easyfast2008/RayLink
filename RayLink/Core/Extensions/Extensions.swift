@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 import UIKit
 import Combine
+import CoreGraphics
 
 // MARK: - String Extensions
 extension String {
@@ -59,6 +60,17 @@ extension Data {
         formatter.countStyle = .file
         return formatter.string(fromByteCount: Int64(count))
     }
+}
+
+// MARK: - Geometry Helpers
+extension CGSize {
+    var w: CGFloat { width }
+    var h: CGFloat { height }
+}
+
+extension CGRect {
+    var w: CGFloat { width }
+    var h: CGFloat { height }
 }
 
 // MARK: - Int64 Extensions
@@ -157,6 +169,21 @@ extension View {
     
     func onFirstAppear(perform action: @escaping () -> Void) -> some View {
         modifier(FirstAppearModifier(action: action))
+    }
+
+    @ViewBuilder
+    func onChangeCompat<Value: Equatable>(
+        of value: Value,
+        initial: Bool = false,
+        perform action: @escaping (Value) -> Void
+    ) -> some View {
+        if #available(iOS 17, *) {
+            onChange(of: value, initial: initial) { _, newValue in
+                action(newValue)
+            }
+        } else {
+            onChange(of: value, perform: action)
+        }
     }
 }
 
