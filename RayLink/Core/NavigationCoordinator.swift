@@ -90,19 +90,19 @@ enum NavigationDestination: Hashable, Identifiable {
 }
 
 // MARK: - Navigation Coordinator
-public final class NavigationCoordinator: ObservableObject {
-    @Published public var path = NavigationPath()
-    @Published public var selectedTab: Int = 0
-    @Published public var presentedSheet: NavigationDestination?
-    @Published public var presentedFullScreen: NavigationDestination?
-    @Published public var alert: AlertItem?
-    
-    public init() {
-        // Public initializer
+final class NavigationCoordinator: ObservableObject {
+    @Published var path = NavigationPath()
+    @Published var selectedTab: Int = 0
+    @Published var presentedSheet: NavigationDestination?
+    @Published var presentedFullScreen: NavigationDestination?
+    @Published var alert: AlertItem?
+
+    init() {
+        // Default initializer
     }
-    
+
     // Tab-based navigation state
-    public enum Tab: Int, CaseIterable {
+    enum Tab: Int, CaseIterable {
         case home = 0
         case servers = 1
         case settings = 2
@@ -192,7 +192,7 @@ public final class NavigationCoordinator: ObservableObject {
     func showAlert(_ alert: AlertItem) {
         self.alert = alert
     }
-    
+
     func selectTab(_ tab: Tab) {
         selectedTab = tab.rawValue
         path = NavigationPath() // Clear navigation stack when switching tabs
@@ -320,12 +320,12 @@ public final class NavigationCoordinator: ObservableObject {
 }
 
 // MARK: - Alert Item
-public struct AlertItem: Identifiable {
-    public let id = UUID()
-    public let title: String
-    public let message: String?
-    public let primaryButton: AlertButton?
-    public let secondaryButton: AlertButton?
+struct AlertItem: Identifiable {
+    let id = UUID()
+    let title: String
+    let message: String?
+    let primaryButton: AlertButton?
+    let secondaryButton: AlertButton?
     
     init(
         title: String,
@@ -340,7 +340,7 @@ public struct AlertItem: Identifiable {
     }
 }
 
-public struct AlertButton {
+struct AlertButton {
     let title: String
     let action: () -> Void
     let style: AlertButtonStyle

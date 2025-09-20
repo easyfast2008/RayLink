@@ -398,18 +398,6 @@ struct AnimatedCounter: View {
     }
 }
 
-// MARK: - Extensions
-extension Int64 {
-    func formattedByteSize() -> String {
-        let formatter = ByteCountFormatter()
-        formatter.countStyle = .binary
-        formatter.includesUnit = true
-        formatter.includesCount = true
-        
-        return formatter.string(fromByteCount: self)
-    }
-}
-
 // MARK: - Preview
 struct ConnectionStats_Previews: PreviewProvider {
     static let sampleStats = ConnectionMetrics(
