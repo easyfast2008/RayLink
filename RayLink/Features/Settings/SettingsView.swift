@@ -40,12 +40,12 @@ struct SettingsView: View {
     private var connectionSection: some View {
         Section("Connection") {
             Toggle("Auto Connect", isOn: $viewModel.autoConnect)
-                .onChange(of: viewModel.autoConnect) { _ in
+                .onChangeCompat(of: viewModel.autoConnect) { _ in
                     viewModel.saveSettings()
                 }
             
             Toggle("Connect on Demand", isOn: $viewModel.connectOnDemand)
-                .onChange(of: viewModel.connectOnDemand) { _ in
+                .onChangeCompat(of: viewModel.connectOnDemand) { _ in
                     viewModel.saveSettings()
                 }
             
@@ -72,12 +72,12 @@ struct SettingsView: View {
                     Text(theme.displayName).tag(theme)
                 }
             }
-            .onChange(of: viewModel.selectedTheme) { _ in
+            .onChangeCompat(of: viewModel.selectedTheme) { _ in
                 viewModel.saveSettings()
             }
             
             Toggle("Haptic Feedback", isOn: $viewModel.hapticFeedback)
-                .onChange(of: viewModel.hapticFeedback) { _ in
+                .onChangeCompat(of: viewModel.hapticFeedback) { _ in
                     viewModel.saveSettings()
                 }
             
@@ -86,7 +86,7 @@ struct SettingsView: View {
                     Text(language.displayName).tag(language)
                 }
             }
-            .onChange(of: viewModel.selectedLanguage) { _ in
+            .onChangeCompat(of: viewModel.selectedLanguage) { _ in
                 viewModel.saveSettings()
             }
         }
@@ -95,12 +95,12 @@ struct SettingsView: View {
     private var privacySection: some View {
         Section("Privacy & Security") {
             Toggle("Analytics", isOn: $viewModel.analyticsEnabled)
-                .onChange(of: viewModel.analyticsEnabled) { _ in
+                .onChangeCompat(of: viewModel.analyticsEnabled) { _ in
                     viewModel.saveSettings()
                 }
             
             Toggle("Crash Reports", isOn: $viewModel.crashReportsEnabled)
-                .onChange(of: viewModel.crashReportsEnabled) { _ in
+                .onChangeCompat(of: viewModel.crashReportsEnabled) { _ in
                     viewModel.saveSettings()
                 }
             

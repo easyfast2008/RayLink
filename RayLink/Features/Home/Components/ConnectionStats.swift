@@ -42,15 +42,15 @@ struct ConnectionStats: View {
         .onAppear {
             startAnimations()
         }
-        .onChange(of: isConnected) { connected in
+        .onChangeCompat(of: isConnected) { connected in
             if connected {
                 startAnimations()
             }
         }
-        .onChange(of: statistics.uploadSpeed) { _ in
+        .onChangeCompat(of: statistics.uploadSpeed) { _ in
             triggerCounterAnimation()
         }
-        .onChange(of: statistics.downloadSpeed) { _ in
+        .onChangeCompat(of: statistics.downloadSpeed) { _ in
             triggerCounterAnimation()
         }
     }

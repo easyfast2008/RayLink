@@ -151,7 +151,7 @@ struct ServerListView: View {
                     showingTestAllButton = !viewModel.servers.isEmpty
                 }
             }
-            .onChange(of: viewModel.servers) { servers in
+            .onChangeCompat(of: viewModel.servers) { servers in
                 withAnimation(AppTheme.Animation.gentleSpring) {
                     showingTestAllButton = !servers.isEmpty
                 }

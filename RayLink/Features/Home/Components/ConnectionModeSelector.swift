@@ -82,7 +82,7 @@ struct ConnectionModeSelector: View {
                 updateSelectorPosition(animated: false)
                 startBackgroundAnimation()
             }
-            .onChange(of: selectedMode) { _ in
+            .onChangeCompat(of: selectedMode) { _ in
                 updateSelectorPosition(animated: true)
                 triggerHapticFeedback()
             }

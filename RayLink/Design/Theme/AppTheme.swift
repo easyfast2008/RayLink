@@ -298,11 +298,13 @@ public struct AppTheme {
         static let connectionPulse = SwiftUI.Animation.easeInOut(duration: 2.0).repeatForever(autoreverses: true)
         static let breathingGlow = SwiftUI.Animation.easeInOut(duration: 1.5).repeatForever(autoreverses: true)
         static let liquidRipple = SwiftUI.Animation.spring(response: 0.8, dampingFraction: 0.4, blendDuration: 0)
-        
+
         // Magnetic Interaction Animations
         static let magneticAttraction = SwiftUI.Animation.spring(response: 0.3, dampingFraction: 0.7, blendDuration: 0)
         static let elasticPull = SwiftUI.Animation.spring(response: 0.4, dampingFraction: 0.5, blendDuration: 0)
-        
+        static let elasticSnap = SwiftUI.Animation.spring(response: 0.3, dampingFraction: 0.4, blendDuration: 0)
+        static let elasticOut = SwiftUI.Animation.timingCurve(0.34, 1.56, 0.64, 1.0, duration: 0.6)
+
         // Wave Flow Animations
         static let waveFlow = SwiftUI.Animation.easeInOut(duration: 3.0).repeatForever(autoreverses: false)
         static let ambientFloat = SwiftUI.Animation.easeInOut(duration: 4.0).repeatForever(autoreverses: true)

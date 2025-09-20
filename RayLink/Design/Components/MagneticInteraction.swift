@@ -410,7 +410,7 @@ struct OrbitMenu: View {
         .onAppear {
             setupOrbitAngles()
         }
-        .onChange(of: isExpanded) { expanded in
+        .onChangeCompat(of: isExpanded) { expanded in
             animateOrbitItems(expanded: expanded)
         }
     }

@@ -42,7 +42,7 @@ struct ServerSearchBar: View {
                             .onSubmit {
                                 isSearchFocused = false
                             }
-                            .onChange(of: searchText) { newValue in
+                            .onChangeCompat(of: searchText) { newValue in
                                 withAnimation(AppTheme.Animation.gentleSpring) {
                                     showClearButton = !newValue.isEmpty
                                 }

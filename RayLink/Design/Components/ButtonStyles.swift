@@ -59,6 +59,36 @@ struct PrimaryButtonStyle: ButtonStyle {
     }
 }
 
+// MARK: - Glassmorphic Button Style
+struct GlassmorphicButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .foregroundColor(AppTheme.Colors.textOnGlass)
+            .padding(.horizontal, AppTheme.Spacing.lg)
+            .padding(.vertical, AppTheme.Spacing.md)
+            .background(
+                RoundedRectangle(cornerRadius: AppTheme.CornerRadius.large)
+                    .fill(AppTheme.Colors.glassMorphicFill)
+                    .background(.ultraThinMaterial)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: AppTheme.CornerRadius.large)
+                            .stroke(
+                                AppTheme.AuroraGradients.primary.opacity(configuration.isPressed ? 0.45 : 0.3),
+                                lineWidth: 1
+                            )
+                    )
+            )
+            .shadow(
+                color: AppTheme.Colors.accent.opacity(configuration.isPressed ? 0.15 : 0.25),
+                radius: configuration.isPressed ? 6 : 12,
+                x: 0,
+                y: configuration.isPressed ? 3 : 6
+            )
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .animation(AppTheme.Animation.fluidSpring, value: configuration.isPressed)
+    }
+}
+
 // MARK: - Secondary Button Style
 struct SecondaryButtonStyle: ButtonStyle {
     let isEnabled: Bool
@@ -278,7 +308,7 @@ struct FloatingActionButtonStyle: ButtonStyle {
             .cornerRadius(size.frameSize / 2)
             .themedShadow(AppTheme.Shadow.large)
             .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
-            .animation(AppTheme.Animation.bouncy, value: configuration.isPressed)
+            .animation(AppTheme.Animation.bouncySpring, value: configuration.isPressed)
     }
     
     private func backgroundForState(configuration: Configuration) -> Color {
@@ -491,7 +521,7 @@ struct LiquidButtonStyle: ButtonStyle {
             .cornerRadius(size.cornerRadius)
             .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
             .animation(AppTheme.Animation.liquidRipple, value: configuration.isPressed)
-            .onChange(of: configuration.isPressed) { pressed in
+            .onChangeCompat(of: configuration.isPressed) { pressed in
                 if pressed {
                     // Liquid ripple effect
                     withAnimation(AppTheme.Animation.liquidRipple) {
@@ -572,7 +602,7 @@ struct PulseRingConnectionStyle: ButtonStyle {
             .onAppear {
                 startConnectionAnimation()
             }
-            .onChange(of: connectionState) { _ in
+            .onChangeCompat(of: connectionState) { _ in
                 startConnectionAnimation()
             }
     }

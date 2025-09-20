@@ -158,6 +158,21 @@ extension View {
     func onFirstAppear(perform action: @escaping () -> Void) -> some View {
         modifier(FirstAppearModifier(action: action))
     }
+
+    @ViewBuilder
+    func onChangeCompat<Value: Equatable>(
+        of value: Value,
+        initial: Bool = false,
+        perform action: @escaping (Value) -> Void
+    ) -> some View {
+        if #available(iOS 17, *) {
+            onChange(of: value, initial: initial) { _, newValue in
+                action(newValue)
+            }
+        } else {
+            onChange(of: value, perform: action)
+        }
+    }
 }
 
 // MARK: - Custom Shape for Corner Radius
