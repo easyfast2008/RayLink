@@ -247,7 +247,9 @@
 		<key>4F3D761953BE4D7A80DF92DC</key>
 		<dict>
 			<key>children</key>
-			<array/>
+			<array>
+				<string>3D74BCA6FA644803ACB7440D</string>
+			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
 			<key>path</key>
@@ -1016,9 +1018,49 @@
 			<string>2147483647</string>
 			<key>files</key>
 			<array>
+				<string>8C677457DDBE47FA94FD15B3</string>
+				<string>1EE129F13B904A01BF502CBE</string>
+				<string>3BBF8330EAD94ED285CCF83C</string>
+				<string>CEE8E404EAEB4F069BB37E2F</string>
+				<string>70EC25D02A45473C960BBD20</string>
 				<string>A1234567890123456789012C</string>
-				<string>A1234567890123456789012A</string>
+				<string>4C0E21ECE8D94529ABBEB8B7</string>
+				<string>D0C03034D5AA49B88E976044</string>
+				<string>297322EB42C0406F9AAFEAA4</string>
+				<string>A03938E20F3840EDA32BEB12</string>
+				<string>F5F5C95F014C44F882AE3769</string>
+				<string>A1234567890123456789013C</string>
+				<string>48E3459ACA8B44ACB957916E</string>
+				<string>A1234567890123456789014C</string>
+				<string>CE8A1E8942D04825A7A2DDA7</string>
+				<string>568FEC2D232A404DB7BAB9D2</string>
+				<string>53B451EB8B4345DCBA534B1D</string>
 				<string>26C4970AF7BB44CA8D27CA1B</string>
+				<string>33D2C68E0CB248D68EC902FA</string>
+				<string>916286BE76704BB59ED6F02B</string>
+				<string>8624E87ED2884659BAF7240F</string>
+				<string>77094561EC184394A1AA8320</string>
+				<string>DC9C391540034E5180496A93</string>
+				<string>820BC1D64A13414CA1E33E85</string>
+				<string>AA78931BD4C04499BB04D956</string>
+				<string>7C62D5A0FEF646C0862E9621</string>
+				<string>A1234567890123456789012A</string>
+				<string>919B0AC050D049A7AA3B2427</string>
+				<string>96E14A96174A48DEA0AEBABC</string>
+				<string>A1234567890123456789013E</string>
+				<string>972433D66E7D4AFE95D7DA6F</string>
+				<string>1C4DB3E4CD2A48189438E2FD</string>
+				<string>098D3513D4884F57B0BC8C20</string>
+				<string>A1234567890123456789014A</string>
+				<string>0EAB74488E134872BC6CA061</string>
+				<string>9AC7043B2DA74D208F092BC8</string>
+				<string>2BAFB098C9AF4F71A9BB24B1</string>
+				<string>ACE41464869243C09F272648</string>
+				<string>2F903011066C4A5FABB89E74</string>
+				<string>8ADE15B2D1ED49EDA0311926</string>
+				<string>EFC0C91720DC4689B045A9DD</string>
+				<string>91D9BE4B5F384C9FBA9D5BA6</string>
+				<string>0ADC358E854A4394ABFD3C20</string>
 			</array>
 			<key>isa</key>
 			<string>PBXSourcesBuildPhase</string>
@@ -1760,6 +1802,24 @@
 			<string>ConnectionStats.swift</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
+		</dict>
+		<key>3D74BCA6FA644803ACB7440D</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>NavigationDestinationViews.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>8624E87ED2884659BAF7240F</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>fileRef</key>
+			<string>3D74BCA6FA644803ACB7440D</string>
 		</dict>
 	</dict>
 	<key>rootObject</key>
