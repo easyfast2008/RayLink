@@ -5,8 +5,8 @@ import SwiftUI
 import UIKit
 
 @MainActor
-public final class HomeViewModel: ObservableObject {
-    @Published public var connectionStatus: VPNConnectionStatus = .disconnected
+final class HomeViewModel: ObservableObject {
+    @Published var connectionStatus: VPNConnectionStatus = .disconnected
     @Published var currentServer: VPNServer?
     @Published var bytesReceived: Int64 = 0
     @Published var bytesSent: Int64 = 0
@@ -28,7 +28,7 @@ public final class HomeViewModel: ObservableObject {
     private var lastBytesSent: Int64 = 0
     private var lastSpeedUpdateTime: Date = Date()
     
-    public init() {
+    init() {
         // Public initializer for SwiftUI
     }
     

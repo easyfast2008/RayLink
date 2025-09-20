@@ -355,7 +355,7 @@ final class SpeedTestService: SpeedTestServiceProtocol {
     }
 }
 
-public struct SpeedTestResult: Codable {
+public struct SpeedTestResult: Codable, Hashable {
     let downloadSpeed: Double // Mbps
     let uploadSpeed: Double // Mbps
     let ping: Int // ms

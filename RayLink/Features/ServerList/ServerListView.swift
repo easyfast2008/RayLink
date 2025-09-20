@@ -45,7 +45,7 @@ struct ServerListView: View {
                             } else if filteredGroups.isEmpty {
                                 EmptyServerState(
                                     onAddServer: { showingAddServer = true },
-                                    onImport: { coordinator.navigate(to: .import) }
+                                    onImport: { coordinator.navigate(to: .importConfig) }
                                 )
                                 .transition(.asymmetric(
                                     insertion: .scale.combined(with: .opacity),
@@ -113,8 +113,8 @@ struct ServerListView: View {
                             Button("Add Server") { 
                                 showingAddServer = true 
                             }
-                            Button("Import from URL") { 
-                                coordinator.navigate(to: .import) 
+                            Button("Import from URL") {
+                                coordinator.navigate(to: .importConfig)
                             }
                             Divider()
                             Button("Refresh All") { 
@@ -286,7 +286,7 @@ struct ServerListView: View {
         
         // Apply protocol filter
         if let protocolFilter = selectedProtocolFilter {
-            servers = servers.filter { $0.protocol == protocolFilter }
+            servers = servers.filter { $0.serverProtocol == protocolFilter }
         }
         
         // Apply search filter
@@ -571,8 +571,8 @@ struct AddServerView: View {
                         .keyboardType(.numberPad)
                     
                     Picker("Protocol", selection: $selectedProtocol) {
-                        ForEach(VPNProtocol.allCases, id: \.self) { protocol in
-                            Text(protocol.rawValue.capitalized).tag(protocol)
+                        ForEach(VPNProtocol.allCases, id: \.self) { vpnProtocol in
+                            Text(vpnProtocol.rawValue.capitalized).tag(vpnProtocol)
                         }
                     }
                 }

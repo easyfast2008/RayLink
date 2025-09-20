@@ -1,7 +1,7 @@
 import Foundation
 
 // MARK: - VPN Server Model
-struct VPNServer: Codable, Identifiable, Equatable {
+struct VPNServer: Codable, Identifiable, Equatable, Hashable {
     let id: String
     var name: String
     let address: String
@@ -49,6 +49,13 @@ struct VPNServer: Codable, Identifiable, Equatable {
 
     static func == (lhs: VPNServer, rhs: VPNServer) -> Bool {
         lhs.id == rhs.id && lhs.address == rhs.address && lhs.port == rhs.port && lhs.serverProtocol == rhs.serverProtocol
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(address)
+        hasher.combine(port)
+        hasher.combine(serverProtocol)
     }
     
     init(
