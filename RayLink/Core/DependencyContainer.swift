@@ -244,35 +244,67 @@ protocol ConfigServiceProtocol {
     func validateConfiguration(_ config: [String: Any]) -> Bool
 }
 
+enum ConfigServiceError: LocalizedError {
+    case invalidFormat
+    case noServersFound
+
+    var errorDescription: String? {
+        switch self {
+        case .invalidFormat:
+            return "The configuration file is not in a supported format."
+        case .noServersFound:
+            return "No servers were found in the imported configuration."
+        }
+    }
+}
+
 final class ConfigService: ConfigServiceProtocol {
     private let networkService: NetworkServiceProtocol
     private let storageManager: StorageManagerProtocol
-    
+
     init(networkService: NetworkServiceProtocol, storageManager: StorageManagerProtocol) {
         self.networkService = networkService
         self.storageManager = storageManager
     }
-    
+
     func importConfiguration(from url: URL) async throws -> [VPNServer] {
         let data = try await networkService.downloadConfig(from: url)
-        
-        // Parse configuration data
-        // This would involve parsing various config formats
-        return []
+        let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
+
+        let serverDictionaries: [[String: Any]]
+        if let container = jsonObject as? [String: Any],
+           let nestedServers = container["servers"] as? [[String: Any]] {
+            serverDictionaries = nestedServers
+        } else if let directServers = jsonObject as? [[String: Any]] {
+            serverDictionaries = directServers
+        } else {
+            throw ConfigServiceError.invalidFormat
+        }
+
+        let importedServers = serverDictionaries.compactMap(VPNServer.from)
+        guard !importedServers.isEmpty else {
+            throw ConfigServiceError.noServersFound
+        }
+
+        let existingServers = (try? storageManager.loadServers()) ?? []
+        var seenIdentifiers = Set<String>()
+        let mergedServers = (importedServers + existingServers).filter { server in
+            seenIdentifiers.insert(server.id).inserted
+        }
+
+        try storageManager.saveServers(mergedServers)
+        return importedServers
     }
-    
+
     func exportConfiguration(_ servers: [VPNServer]) async throws -> URL {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
-        
         let configData = [
             "version": "1.0",
             "app": "RayLink",
             "servers": servers.map { $0.toDictionary() }
         ]
-        
+
         let data = try JSONSerialization.data(withJSONObject: configData, options: .prettyPrinted)
-        
+
         let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let fileURL = documentsPath.appendingPathComponent("raylink-config-\(Date().timeIntervalSince1970).json")
         

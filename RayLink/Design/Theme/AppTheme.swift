@@ -265,7 +265,10 @@ public struct AppTheme {
         public static let lg: CGFloat = 16
         public static let xl: CGFloat = 20
         public static let xxl: CGFloat = 24
-        static let round: CGFloat = 50
+        public static let small: CGFloat = sm
+        public static let large: CGFloat = lg
+        public static let glassmorphicCard: CGFloat = xl
+        public static let round: CGFloat = 50
     }
     
     // MARK: - Shadows

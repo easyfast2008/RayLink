@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 import UIKit
 import Combine
+import CoreGraphics
 
 // MARK: - String Extensions
 extension String {
@@ -59,6 +60,17 @@ extension Data {
         formatter.countStyle = .file
         return formatter.string(fromByteCount: Int64(count))
     }
+}
+
+// MARK: - Geometry Helpers
+extension CGSize {
+    var w: CGFloat { width }
+    var h: CGFloat { height }
+}
+
+extension CGRect {
+    var w: CGFloat { width }
+    var h: CGFloat { height }
 }
 
 // MARK: - Int64 Extensions
